@@ -1,0 +1,134 @@
+.board-container .top-bar {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #000;
+}
+
+.board-container .top-bar a {
+  background-color: #000;
+  color: white;
+  padding: 8px 16px;
+  font-size: 14px;
+  border-radius: 4px;
+  text-decoration: none;
+}
+
+.board-container .top-bar a:hover {
+  background-color: #333;
+}
+
+.board-container .search-form {
+  display: flex;
+  align-items: center;
+}
+
+.board-container .search-form input[type="text"] {
+  padding: 8px;
+  width: 200px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-right: 5px;
+}
+
+.board-container .search-form button {
+  padding: 8px 12px;
+  background-color: #000;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.board-container .search-form button:hover {
+  background-color: #333;
+}
+
+.board-container table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #fff;
+  font-size: 14px;
+  text-align: center;
+}
+
+.board-container thead {
+  background-color: #f8f8f8;
+  border-top: 2px solid #000;
+  border-bottom: 1px solid #ddd;
+}
+
+.board-container th, .board-container td {
+  padding: 12px;
+  border-bottom: 1px solid #eee;
+}
+
+.board-container tbody tr:hover {
+  background-color: #f5f5f5;
+}
+
+.board-container a {
+  color: #000;
+  text-decoration: none;
+}
+
+.board-container a:hover {
+  text-decoration: underline;
+}
+
+.board-container .pagination {
+  margin-top: 40px;
+  text-align: center;
+}
+
+.board-container .pagination a,
+.board-container .pagination span {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 6px;
+  width: 36px;
+  height: 36px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  background-color: #fff;
+  color: #333;
+  border-radius: 6px;
+  text-decoration: none;
+  box-sizing: border-box;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.board-container .pagination a:hover {
+  background-color: #f0f0f0;
+  color: #000;
+}
+
+.board-container .pagination .current {
+  background-color: #000;
+  color: #fff;
+  font-weight: bold;
+  pointer-events: none;
+  border: 1px solid #000;
+}
+
+.board-container .bottom-controls {
+  text-align: center;
+  margin-top: 30px;
+}
+
+.board-container .bottom-controls a.button {
+  background-color: #000;
+  color: white;
+  padding: 10px 24px;
+  border-radius: 4px;
+  font-size: 14px;
+  text-decoration: none;
+}
+
+.board-container .bottom-controls a.button:hover {
+  background-color: #333;
+}

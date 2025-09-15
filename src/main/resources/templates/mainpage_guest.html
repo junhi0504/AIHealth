@@ -1,0 +1,90 @@
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="content">
+    <div class="main">
+        <div class="left-panel">
+            <div class="section-title">
+                오늘의 운동
+                <button class="more-button" onclick="location.href='/member/login'">+더보기</button>
+            </div>
+            <div class="exercise-list">
+                <div class="exercise-item">
+                    <img th:src="@{/images/squat.png}" alt="스쿼트 아이콘" style="width: 24px; height: 24px; margin-right: 15px;"/>
+                    <span>스쿼트<br><small>3세트 15회 / 50 kcal</small></span>
+                    <input type="checkbox" style="margin-left: auto;"/>
+                </div>
+                <div class="exercise-item">
+                    <img th:src="@{/images/pushup.png}" alt="푸쉬업 아이콘" style="width: 24px; height: 24px; margin-right: 15px;"/>
+                    <span>푸쉬업<br><small>3세트 12회 / 40 kcal</small></span>
+                    <input type="checkbox" style="margin-left: auto;"/>
+                </div>
+                <div class="exercise-item">
+                    <img th:src="@{/images/plank.png}" alt="플랭크 아이콘" style="width: 24px; height: 24px; margin-right: 15px;"/>
+                    <span>플랭크<br><small>3세트 1분 / 30 kcal</small></span>
+                    <input type="checkbox" style="margin-left: auto;"/>
+                </div>
+                <div class="exercise-item">
+                    <img th:src="@{/images/lunge.png}" alt="런지 아이콘" style="width: 24px; height: 24px; margin-right: 15px;"/>
+                    <span>런지<br><small>3세트 12회 / 45 kcal</small></span>
+                    <input type="checkbox" style="margin-left: auto;"/>
+                </div>
+                <div class="exercise-item">
+                    <img th:src="@{/images/walk.png}" alt="걷기 아이콘" style="width: 24px; height: 24px; margin-right: 15px;"/>
+                    <span>걷기<br><small>30분 / 150 kcal</small></span>
+                    <input type="checkbox" style="margin-left: auto;"/>
+                </div>
+            </div>
+        </div>
+
+        <div class="right-panel">
+            <div>
+                <div class="chart-header">
+                    체중 변화
+                    <button class="more-button" onclick="location.href='/member/login'">+더보기</button>
+                </div>
+                <div class="chart-boxes">
+                    <div class="chart-box">📈 체중 그래프</div>
+                    <div class="chart-box">📈 골격근량 그래프</div>
+                    <div class="chart-box">📈 체지방량 그래프</div>
+                </div>
+            </div>
+            <div>
+                <div class="section-title">오늘의 추천식단</div>
+                <div class="meals">
+                    <div class="meal-box">
+                        <img th:src="@{/images/breakfast.png}" alt="아침 아이콘" style="width: 48px; height: 48px;"/>
+                        <p>아침</p><p>550 kcal</p>
+                    </div>
+                    <div class="meal-box">
+                        <img th:src="@{/images/lunch.png}" alt="점심 아이콘" style="width: 48px; height: 48px;"/>
+                        <p>점심</p><p>950 kcal</p>
+                    </div>
+                    <div class="meal-box">
+                        <img th:src="@{/images/dinner.png}" alt="저녁 아이콘" style="width: 48px; height: 48px;"/>
+                        <p>저녁</p><p>800 kcal</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="board-section">
+        <div class="section-title">
+            자유게시판
+            <button class="more-button" onclick="location.href='/board'">+더보기</button>
+        </div>
+        <div class="board">
+            <div th:if="${#lists.isEmpty(recentPosts)}" class="board-item">
+                <span>게시글이 없습니다.</span>
+            </div>
+            <div th:each="post : ${recentPosts}" class="board-item">
+                <a th:href="@{'/board/' + ${post.id}}">
+                    <span th:text="${post.title}">게시글 제목</span>
+                </a>
+                <span th:text="${post.memberName} + ' | ' + ${#temporals.format(post.createdAt, 'yyyy-MM-dd')}">
+                    작성자 | 작성일
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+</html>

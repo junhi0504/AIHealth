@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inbody 데이터 입력</title>
+  <style>
+    body {
+        font-family: 'Noto Sans KR', sans-serif;
+        background-color: #f4f7f9;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        min-height: 100vh;
+        margin: 0;
+    }
+
+    .inbody-form-container {
+        width: 100%;
+        max-width: 500px;
+        padding: 30px;
+        background-color: #ffffff;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        margin-top: 50px;
+    }
+
+    .inbody-title {
+        text-align: center;
+        color: #2c3e50;
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 25px;
+    }
+
+    #inbodyForm {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .inbody-label {
+        display: flex;
+        flex-direction: column;
+        font-size: 1rem;
+        font-weight: 500;
+        color: #5d6d7e;
+    }
+
+    .inbody-input,
+    .inbody-select {
+        width: 100%;
+        padding: 12px;
+        margin-top: 8px;
+        font-size: 1rem;
+        border: 1px solid #dcdfe6;
+        border-radius: 8px;
+        transition: border-color 0.3s, box-shadow 0.3s;
+    }
+
+    .inbody-input:focus,
+    .inbody-select:focus {
+        border-color: #4a90e2;
+        box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
+        outline: none;
+    }
+
+    .inbody-button {
+        width: 100%;
+        padding: 12px;
+        margin-top: 15px;
+        background-color: #2ecc71;
+        color: white;
+        font-size: 1rem;
+        font-weight: 600;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background-color 0.3s, transform 0.2s;
+    }
+
+    .inbody-button:hover {
+        background-color: #27ae60;
+        transform: translateY(-2px);
+    }
+
+    .login-message {
+        text-align: center;
+        font-size: 1.2rem;
+        color: #e74c3c;
+        font-weight: 600;
+        margin-top: 20px;
+        display: none; /* Initially hidden */
+    }
+  </style>
+</head>
+<body>
+<div th:fragment="content">
+
+  <div sec:authorize="isAnonymous()">
+    <script>
+      window.location.href = '/member/login';
+    </script>
+  </div>
+
+  <!-- ▼▼▼ [추가] 로그인 상태일 때만 인바디 폼이 보이도록 감싸줍니다. ▼▼▼ -->
+  <div sec:authorize="isAuthenticated()">
+    <div class="inbody-form-container">
+      <h1 class="inbody-title">Inbody 데이터 입력</h1>
+      <div id="content-wrapper">
+        <form th:object="${inbodyRequest}" id="inbodyForm" method="post" action="/inbody/analyze">
+          <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+
+          <label class="inbody-label">신장:
+            <input class="inbody-input" type="number" th:field="*{height}" step="any" required />
+          </label>
+          <label class="inbody-label">체중:
+            <input class="inbody-input" type="number" th:field="*{weight}" step="any" required />
+          </label>
+          <label class="inbody-label">체지방률:
+            <input class="inbody-input" type="number" th:field="*{bodyFatPercentage}" step="any" required />
+          </label>
+          <label class="inbody-label">골격근량:
+            <input class="inbody-input" type="number" th:field="*{muscleMass}" step="any" required />
+          </label>
+          <label class="inbody-label">내장지방레벨:
+            <input class="inbody-input" type="number" th:field="*{visceralFatLevel}" step="any" required />
+          </label>
+          <label class="inbody-label">운동 목표:
+            <select class="inbody-select" th:field="*{goal}" required>
+              <option value="" th:text="'선택하세요'"></option>
+              <option value="건강">건강</option>
+              <option value="다이어트">다이어트</option>
+              <option value="린매스업">린매스업</option>
+              <option value="벌크업">벌크업</option>
+            </select>
+          </label>
+          <button class="inbody-button" type="submit">분석 요청</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

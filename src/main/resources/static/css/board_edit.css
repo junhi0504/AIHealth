@@ -1,0 +1,89 @@
+.edit-container {
+  width: 100%;
+  max-width: 800px;
+  margin: 50px auto; /* layout 과 겹치지 않도록 상단 마진 추가 및 중앙 정렬 */
+  padding: 40px;
+  background-color: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+}
+
+.edit-title {
+  text-align: center;
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #1a202c;
+  margin-top: 0;
+  margin-bottom: 40px;
+}
+
+.edit-form {
+  width: 100%;
+}
+
+.edit-label {
+  display: block;
+  margin-bottom: 25px;
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: #4a5568;
+}
+
+.edit-input,
+.edit-textarea {
+  width: 100%;
+  padding: 15px;
+  font-size: 1rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  margin-top: 10px;
+  box-sizing: border-box; /* 너비 계산이 padding을 포함하도록 설정 */
+  transition: all 0.3s ease;
+}
+
+.edit-input:focus,
+.edit-textarea:focus {
+  border-color: #4299e1;
+  box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.5);
+  outline: none;
+}
+
+.edit-textarea {
+  resize: vertical;
+  min-height: 280px;
+}
+
+.edit-button {
+  width: auto;
+  padding: 14px 30px;
+  background-color: #4299e1;
+  color: white;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  display: block;
+  margin-left: auto; /* 버튼을 오른쪽으로 정렬 */
+  margin-top: 10px; /* 위 요소와 간격 추가 */
+  transition: background-color 0.3s ease;
+}
+
+.edit-button:hover {
+  background-color: #3182ce;
+}
+
+.edit-back-link {
+  display: block;
+  text-align: center;
+  margin-top: 40px;
+  font-size: 1.1rem;
+  color: #4a5568;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.edit-back-link:hover {
+  color: #2b6cb0;
+  text-decoration: underline;
+}

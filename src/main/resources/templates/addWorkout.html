@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>운동 추가</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap');
+    body {
+        font-family: 'Noto Sans KR', sans-serif;
+        background-color: #f4f6f8;
+        padding: 20px;
+        color: #333;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        min-height: 100vh;
+    }
+    h2 {
+        color: #2c3e50;
+        margin-bottom: 30px;
+        text-align: center;
+        font-size: 2rem;
+        font-weight: 700;
+    }
+    h3 {
+        color: #34495e;
+        border-bottom: 2px solid #ecf0f1;
+        padding-bottom: 10px;
+        margin-top: 30px;
+        margin-bottom: 20px;
+        font-size: 1.5rem;
+    }
+    form {
+        background-color: white;
+        padding: 40px;
+        border-radius: 16px;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+        max-width: 700px;
+        width: 100%;
+    }
+    .exercise-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 20px;
+        padding: 10px 0;
+    }
+    .exercise-row:not(:last-child) {
+        border-bottom: 1px dashed #ecf0f1;
+    }
+    .exercise-row label {
+        flex-grow: 1;
+        font-size: 1.1rem;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        cursor: pointer;
+    }
+    .exercise-row input[type="checkbox"] {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        width: 20px;
+        height: 20px;
+        border: 2px solid #bdc3c7;
+        border-radius: 4px;
+        position: relative;
+        cursor: pointer;
+        outline: none;
+        transition: all 0.2s ease;
+    }
+    .exercise-row input[type="checkbox"]:checked {
+        background-color: #3498db;
+        border-color: #3498db;
+    }
+    .exercise-row input[type="checkbox"]:checked::after {
+        content: '✔';
+        color: white;
+        font-size: 14px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+    .exercise-row .input-group {
+        display: flex;
+        gap: 10px;
+    }
+    .exercise-row input[type="number"] {
+        width: 80px;
+        padding: 8px 12px;
+        font-size: 1rem;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        text-align: center;
+        transition: border-color 0.3s ease;
+    }
+    .exercise-row input[type="number"]:focus {
+        border-color: #3498db;
+        outline: none;
+    }
+    button {
+        display: block;
+        width: 100%;
+        margin-top: 30px;
+        background-color: #2ecc71;
+        color: white;
+        border: none;
+        padding: 18px;
+        font-size: 1.2rem;
+        font-weight: 700;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+    button:hover {
+        background-color: #27ae60;
+        transform: translateY(-2px);
+    }
+  </style>
+</head>
+<body>
+<form id="addWorkoutForm">
+  <h2>운동 선택</h2>
+  <input type="hidden" name="_csrf" th:value="${_csrf.token}" />
+
+  <h3>가슴</h3>
+  <div class="exercise-row">
+    <label><input type="checkbox" name="selectedExercises" value="벤치프레스" /> 벤치프레스</label>
+    <div class="input-group">
+      <input type="number" name="sets_벤치프레스" placeholder="세트" min="1" />
+      <input type="number" name="reps_벤치프레스" placeholder="횟수" min="1" />
+    </div>
+  </div>
+  <div class="exercise-row">
+    <label><input type="checkbox" name="selectedExercises" value="인클라인&nbsp;벤치프레스" /> 인클라인 벤치프레스</label>
+    <div class="input-group">
+      <input type="number" name="sets_인클라인&nbsp;벤치프레스" placeholder="세트" min="1" />
+      <input type="number" name="reps_인클라인&nbsp;벤치프레스" placeholder="횟수" min="1" />
+    </div>
+  </div>
+  <div class="exercise-row">
+    <label><input type="checkbox" name="selectedExercises" value="딥스" /> 딥스</label>
+    <div class="input-group">
+      <input type="number" name="sets_딥스" placeholder="세트" min="1" />
+      <input type="number" name="reps_딥스" placeholder="횟수" min="1" />
+    </div>
+  </div>
+  <div class="exercise-row">
+    <label><input type="checkbox" name="selectedExercises" value="펙덱&nbsp;플라이" /> 펙덱 플라이</label>
+    <div class="input-group">
+      <input type="number" name="sets_펙덱&nbsp;플라이" placeholder="세트" min="1" />
+      <input type="number" name="reps_펙덱&nbsp;플라이" placeholder="횟수" min="1" />
+    </div>
+  </div>
+  <div class="exercise-row">
+    <label><input type="checkbox" name="selectedExercises" value="푸쉬업" /> 푸쉬업</label>
+    <div class="input-group">
+      <input type="number" name="sets_푸쉬업" placeholder="세트" min="1" />
+      <input type="number" name="reps_푸쉬업" placeholder="횟수" min="1" />
+    </div>
+  </div>
+  <h3>하체</h3>
+  <div class="exercise-row">
+    <label><input type="checkbox" name="selectedExercises" value="스쿼트" /> 스쿼트</label>
+    <div class="input-group">
+      <input type="number" name="sets_스쿼트" placeholder="세트" min="1" />
+      <input type="number" name="reps_스쿼트" placeholder="횟수" min="1" />
+    </div>
+  </div>
+  <div class="exercise-row">
+    <label><input type="checkbox" name="selectedExercises" value="레그프레스" /> 레그프레스</label>
+    <div class="input-group">
+      <input type="number" name="sets_레그프레스" placeholder="세트" min="1" />
+      <input type="number" name="reps_레그프레스" placeholder="횟수" min="1" />
+    </div>
+  </div>
+  <div class="exercise-row">
+    <label><input type="checkbox" name="selectedExercises" value="데드리프트" /> 데드리프트</label>
+    <div class="input-group">
+      <input type="number" name="sets_데드리프트" placeholder="세트" min="1" />
+      <input type="number" name="reps_데드리프트" placeholder="횟수" min="1" />
+    </div>
+  </div>
+  <div class="exercise-row">
+    <label><input type="checkbox" name="selectedExercises" value="런지" /> 런지</label>
+    <div class="input-group">
+      <input type="number" name="sets_런지" placeholder="세트" min="1" />
+      <input type="number" name="reps_런지" placeholder="횟수" min="1" />
+    </div>
+  </div>
+  <div class="exercise-row">
+    <label><input type="checkbox" name="selectedExercises" value="레그&nbsp;컬" /> 레그 컬</label>
+    <div class="input-group">
+      <input type="number" name="sets_레그&nbsp;컬" placeholder="세트" min="1" />
+      <input type="number" name="reps_레그&nbsp;컬" placeholder="횟수" min="1" />
+    </div>
+  </div>
+  <h3>등</h3>
+  <div class="exercise-row">
+    <label><input type="checkbox" name="selectedExercises" value="랫풀다운" /> 랫풀다운</label>
+    <div class="input-group">
+      <input type="number" name="sets_랫풀다운" placeholder="세트" min="1" />
+      <input type="number" name="reps_랫풀다운" placeholder="횟수" min="1" />
+    </div>
+  </div>
+  <div class="exercise-row">
+    <label><input type="checkbox" name="selectedExercises" value="바벨로우" /> 바벨로우</label>
+    <div class="input-group">
+      <input type="number" name="sets_바벨로우" placeholder="세트" min="1" />
+      <input type="number" name="reps_바벨로우" placeholder="횟수" min="1" />
+    </div>
+  </div>
+  <div class="exercise-row">
+    <label><input type="checkbox" name="selectedExercises" value="턱걸이" /> 턱걸이</label>
+    <div class="input-group">
+      <input type="number" name="sets_턱걸이" placeholder="세트" min="1" />
+      <input type="number" name="reps_턱걸이" placeholder="횟수" min="1" />
+    </div>
+  </div>
+  <div class="exercise-row">
+    <label><input type="checkbox" name="selectedExercises" value="시티드&nbsp;케이블&nbsp;로우" /> 시티드 케이블 로우</label>
+    <div class="input-group">
+      <input type="number" name="sets_시티드&nbsp;케이블&nbsp;로우" placeholder="세트" min="1" />
+      <input type="number" name="reps_시티드&nbsp;케이블&nbsp;로우" placeholder="횟수" min="1" />
+    </div>
+  </div>
+  <div class="exercise-row">
+    <label><input type="checkbox" name="selectedExercises" value="백&nbsp;익스텐션" /> 백 익스텐션</label>
+    <div class="input-group">
+      <input type="number" name="sets_백&nbsp;익스텐션" placeholder="세트" min="1" />
+      <input type="number" name="reps_백&nbsp;익스텐션" placeholder="횟수" min="1" />
+    </div>
+  </div>
+  <h3>어깨</h3>
+  <div class="exercise-row">
+    <label><input type="checkbox" name="selectedExercises" value="밀리터리&nbsp;프레스" /> 밀리터리 프레스</label>
+    <div class="input-group">
+      <input type="number" name="sets_밀리터리&nbsp;프레스" placeholder="세트" min="1" />
+      <input type="number" name="reps_밀리터리&nbsp;프레스" placeholder="횟수" min="1" />
+    </div>
+  </div>
+  <div class="exercise-row">
+    <label><input type="checkbox" name="selectedExercises" value="사이드&nbsp;레터럴&nbsp;레이즈" /> 사이드 레터럴 레이즈</label>
+    <div class="input-group">
+      <input type="number" name="sets_사이드&nbsp;레터럴&nbsp;레이즈" placeholder="세트" min="1" />
+      <input type="number" name="reps_사이드&nbsp;레터럴&nbsp;레이즈" placeholder="횟수" min="1" />
+    </div>
+  </div>
+  <div class="exercise-row">
+    <label><input type="checkbox" name="selectedExercises" value="프론트&nbsp;레이즈" /> 프론트 레이즈</label>
+    <div class="input-group">
+      <input type="number" name="sets_프론트&nbsp;레이즈" placeholder="세트" min="1" />
+      <input type="number" name="reps_프론트&nbsp;레이즈" placeholder="횟수" min="1" />
+    </div>
+  </div>
+  <div class="exercise-row">
+    <label><input type="checkbox" name="selectedExercises" value="리어&nbsp;델트&nbsp;플라이" /> 리어 델트 플라이</label>
+    <div class="input-group">
+      <input type="number" name="sets_리어&nbsp;델트&nbsp;플라이" placeholder="세트" min="1" />
+      <input type="number" name="reps_리어&nbsp;델트&nbsp;플라이" placeholder="횟수" min="1" />
+    </div>
+  </div>
+  <div class="exercise-row">
+    <label><input type="checkbox" name="selectedExercises" value="업라이트&nbsp;로우" /> 업라이트 로우</label>
+    <div class="input-group">
+      <input type="number" name="sets_업라이트&nbsp;로우" placeholder="세트" min="1" />
+      <input type="number" name="reps_업라이트&nbsp;로우" placeholder="횟수" min="1" />
+    </div>
+  </div>
+  <h3>팔</h3>
+  <div class="exercise-row">
+    <label><input type="checkbox" name="selectedExercises" value="바벨&nbsp;컬" /> 바벨 컬</label>
+    <div class="input-group">
+      <input type="number" name="sets_바벨&nbsp;컬" placeholder="세트" min="1" />
+      <input type="number" name="reps_바벨&nbsp;컬" placeholder="횟수" min="1" />
+    </div>
+  </div>
+  <div class="exercise-row">
+    <label><input type="checkbox" name="selectedExercises" value="덤벨&nbsp;컬" /> 덤벨 컬</label>
+    <div class="input-group">
+      <input type="number" name="sets_덤벨&nbsp;컬" placeholder="세트" min="1" />
+      <input type="number" name="reps_덤벨&nbsp;컬" placeholder="횟수" min="1" />
+    </div>
+  </div>
+  <div class="exercise-row">
+    <label><input type="checkbox" name="selectedExercises" value="트라이셉스&nbsp;익스텐션" /> 트라이셉스 익스텐션</label>
+    <div class="input-group">
+      <input type="number" name="sets_트라이셉스&nbsp;익스텐션" placeholder="세트" min="1" />
+      <input type="number" name="reps_트라이셉스&nbsp;익스텐션" placeholder="횟수" min="1" />
+    </div>
+  </div>
+  <div class="exercise-row">
+    <label><input type="checkbox" name="selectedExercises" value="트라이셉스&nbsp;푸시다운" /> 트라이셉스 푸시다운</label>
+    <div class="input-group">
+      <input type="number" name="sets_트라이셉스&nbsp;푸시다운" placeholder="세트" min="1" />
+      <input type="number" name="reps_트라이셉스&nbsp;푸시다운" placeholder="횟수" min="1" />
+    </div>
+  </div>
+  <div class="exercise-row">
+    <label><input type="checkbox" name="selectedExercises" value="해머&nbsp;컬" /> 해머 컬</label>
+    <div class="input-group">
+      <input type="number" name="sets_해머&nbsp;컬" placeholder="세트" min="1" />
+      <input type="number" name="reps_해머&nbsp;컬" placeholder="횟수" min="1" />
+    </div>
+  </div>
+  <input type="hidden" name="workoutDate" th:value="${workoutDate}" />
+  <button type="submit">선택한 운동 추가</button>
+</form>
+<script>
+  document.getElementById('addWorkoutForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const form = e.target;
+      const formData = new FormData();
+      const selected = form.querySelectorAll('input[name="selectedExercises"]:checked');
+      const workoutDate = form.querySelector('input[name="workoutDate"]').value;
+      const csrfToken = form.querySelector('input[name="_csrf"]').value;
+
+      if (selected.length === 0) {
+          alert('운동을 하나 이상 선택해주세요.');
+          return;
+      }
+
+      formData.append('workoutDate', workoutDate);
+      formData.append('_csrf', csrfToken); // CSRF 토큰 추가
+
+      for (const cb of selected) {
+          const exercise = cb.value;
+          const setsInputName = `sets_${exercise}`;
+          const repsInputName = `reps_${exercise}`;
+
+          const setInput = form.querySelector(`input[name="${setsInputName}"]`);
+          const repInput = form.querySelector(`input[name="${repsInputName}"]`);
+
+          const sets = setInput?.value;
+          const reps = repInput?.value;
+
+          if (!sets || !reps || sets < 1 || reps < 1) {
+              alert(`'${exercise.replace(/&nbsp;/g, ' ')}'의 세트 수와 횟수를 모두 올바르게 입력해주세요.`);
+              return;
+          }
+
+          formData.append('selectedExercises', exercise);
+          formData.append(setsInputName, sets);
+          formData.append(repsInputName, reps);
+      }
+
+      fetch('/workout/add', {
+          method: 'POST',
+          body: new URLSearchParams(formData)
+      })
+      .then(response => {
+          if (!response.ok) {
+              return response.text().then(text => { throw new Error(text) });
+          }
+          return response.text();
+      })
+      .then(result => {
+          if (result === 'success') {
+              window.opener.location.reload();
+              window.close();
+          } else {
+              alert(result);
+          }
+      })
+      .catch(err => {
+          alert(err.message);
+      });
+  });
+</script>
+</body>
+</html>

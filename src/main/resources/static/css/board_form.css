@@ -1,0 +1,77 @@
+.board-form-container {
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 40px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.board-form-container h1 {
+  text-align: center;
+  font-size: 28px;
+  margin-top: 0;
+  margin-bottom: 30px;
+}
+
+.board-form-container .form-group {
+  margin-bottom: 20px;
+}
+
+.board-form-container label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.board-form-container input[type="text"],
+.board-form-container textarea {
+  width: 100%;
+  padding: 12px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.board-form-container textarea {
+  resize: vertical;
+  min-height: 250px;
+}
+
+.board-form-container .form-actions {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 30px;
+}
+
+.board-form-container .btn {
+  padding: 10px 24px;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  text-align: center;
+}
+
+.board-form-container .btn-primary {
+  background-color: #000;
+  color: white;
+}
+
+.board-form-container .btn-primary:hover {
+  background-color: #333;
+}
+
+.board-form-container .btn-secondary {
+    background-color: #6c757d;
+    color: white;
+}
+
+.board-form-container .btn-secondary:hover {
+    background-color: #5a6268;
+}

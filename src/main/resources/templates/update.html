@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="content">
+
+    <style>
+        .update-page-container {
+            background-color: #fff;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            padding: 40px 30px;
+            width: 400px;
+            text-align: center;
+            margin: 50px auto;
+        }
+        .title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #333;
+        }
+        .update-form label {
+            display: block;
+            text-align: left;
+            font-size: 14px;
+            color: #333;
+            margin-bottom: 5px;
+            margin-top: 15px;
+        }
+        .update-form input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+            outline: none;
+        }
+        .update-form input:focus {
+            border-color: #4d90fe;
+            box-shadow: 0 0 5px rgba(77, 144, 254, 0.5);
+        }
+        .update-form input[readonly] {
+            background-color: #f7f9fc;
+            cursor: not-allowed;
+        }
+        .submit-button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 0;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 20px;
+        }
+        .submit-button:hover {
+            background-color: #0056b3;
+        }
+        .form-message {
+            font-size: 12px;
+            margin-top: 5px;
+            margin-bottom: 0; /* ✨ 아래쪽 여백을 줄여 전체적인 공백 감소 */
+            min-height: 1.2em;
+            text-align: left;
+        }
+    </style>
+
+    <div class="update-page-container">
+        <h1 class="title">정보수정</h1>
+        <form id="updateForm" action="/member/update" method="post" class="update-form">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+            <input type="hidden" th:value="${updateMember.id}" name="id">
+
+            <label for="memberEmail">아이디</label>
+            <input type="text" id="memberEmail" th:value="${updateMember.memberEmail}" name="memberEmail" readonly>
+            <p class="form-message"></p>
+
+            <label for="memberName">이름 (별명)</label>
+            <input type="text" id="memberName" th:value="${updateMember.memberName}" name="memberName" onblur="nameCheck()">
+            <p id="name-check-result" class="form-message"></p>
+
+            <label for="memberPassword">수정 비밀번호</label>
+            <input type="password" id="memberPassword" name="memberPassword" placeholder="변경할 경우에만 입력하세요">
+            <p class="form-message"></p>
+
+            <button type="submit" class="submit-button">정보수정</button>
+        </form>
+    </div>
+
+    <script
+            src="https://code.jquery.com/jquery-3.6.3.min.js"
+            integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU="
+            crossorigin="anonymous"></script>
+
+    <script th:inline="javascript">
+        /* <![CDATA[ */
+
+        const token = /*[[${_csrf.token}]]*/ null;
+        const header = /*[[${_csrf.headerName}]]*/ null;
+        $(document).ajaxSend(function(e, xhr, options) {
+            xhr.setRequestHeader(header, token);
+        });
+
+        const originalName = /*[[${updateMember.memberName}]]*/ '';
+        let isNameAvailable = true;
+
+        const nameCheck = () => {
+            const name = document.getElementById("memberName").value;
+            const nameResult = document.getElementById("name-check-result");
+
+            if (!name) {
+                nameResult.style.color = "red";
+                nameResult.innerText = "이름(별명)을 입력하세요.";
+                isNameAvailable = false;
+                return;
+            }
+
+            if (name === originalName) {
+                nameResult.innerText = "";
+                isNameAvailable = true;
+                return;
+            }
+
+            $.ajax({
+                type: "post",
+                url: "/member/name-check",
+                data: { "memberName": name },
+                success: function(res) {
+                    if (res === "ok") {
+                        nameResult.style.color = "green";
+                        nameResult.innerText = "사용 가능한 이름입니다.";
+                        isNameAvailable = true;
+                    } else {
+                        nameResult.style.color = "red";
+                        nameResult.innerText = "이미 사용 중인 이름입니다.";
+                        isNameAvailable = false;
+                    }
+                },
+                error: function() {
+                    nameResult.style.color = "orange";
+                    nameResult.innerText = "서버 오류. 잠시 후 다시 시도하세요.";
+                    isNameAvailable = false;
+                }
+            });
+        };
+
+        document.getElementById("updateForm").addEventListener("submit", function (e) {
+            e.preventDefault();
+
+            if (!isNameAvailable) {
+                alert("이미 사용 중인 이름(별명)입니다. 다른 이름을 사용해주세요.");
+                return;
+            }
+
+            const name = document.getElementById("memberName").value;
+            const password = document.getElementById("memberPassword").value;
+            let message = `다음 정보로 변경하시겠습니까?\n\n이름: ${name}`;
+
+            if (password) {
+                message += `\n비밀번호: (변경됨)`;
+            }
+
+            const confirmed = confirm(message);
+            if (confirmed) {
+                alert("정보가 변경되었습니다!");
+                this.submit();
+            }
+        });
+        /* ]]> */
+    </script>
+</div>
+</html>

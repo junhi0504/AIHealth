@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<div th:fragment="content">
+    <input type="hidden" id="mainMemberId" th:if="${loginMember}" th:value="${loginMember.id}">
+
+    <div class="main">
+        <div class="left-panel">
+            <div class="section-title">
+                오늘의 운동
+                <button class="more-button" onclick="location.href='/workout'">+더보기</button>
+            </div>
+            <div class="exercise-list">
+                <div th:if="${#lists.isEmpty(todayWorkouts)}" class="exercise-item">
+                    <span>오늘 등록된 운동이 없습니다.</span>
+                </div>
+                <div th:each="workout : ${todayWorkouts}" class="exercise-item">
+                    <span>
+                        <span th:text="${workout.exerciseName}"></span>
+                        <br>
+                        <small th:if="${workout.sets != null and workout.reps != null}"
+                               th:text="${workout.sets + '세트 ' + workout.reps + '회'}"></small>
+                    </span>
+                    <input type="checkbox" th:checked="${workout.completed}"
+                           th:onclick="updateWorkoutStatus([[${workout.id}]], this.checked)" />
+                </div>
+            </div>
+        </div>
+
+        <div class="right-panel">
+            <div>
+                <div class="chart-header">
+                    체중 변화
+                    <button class="more-button" onclick="location.href='/main/profile'">+더보기</button>
+                </div>
+                <div class="chart-boxes">
+                    <div class="chart-box"><canvas id="mainWeightChart" style="width:100%; height:200px;"></canvas></div>
+                    <div class="chart-box"><canvas id="mainMuscleChart" style="width:100%; height:200px;"></canvas></div>
+                    <div class="chart-box"><canvas id="mainFatChart" style="width:100%; height:200px;"></canvas></div>
+                </div>
+            </div>
+            <div>
+                <div class="section-title">
+                    오늘의 추천식단
+                    <button class="more-button" onclick="location.href='/main/profile'">+더보기</button>
+                </div>
+                <div class="meals" sec:authorize="isAuthenticated()" th:if="${recommendation != null and recommendation.totalCalories > 0}">
+                    <div class="meal-box diet-plan"><h3>아침</h3><canvas id="breakfastDonutChart" height="200" style="width:100%; height:200px;"></canvas></div>
+                    <div class="meal-box diet-plan"><h3>점심</h3><canvas id="lunchDonutChart" height="200" style="width:100%; height:200px;"></canvas></div>
+                    <div class="meal-box diet-plan"><h3>저녁</h3><canvas id="dinnerDonutChart" height="200" style="width:100%; height:200px;"></canvas></div>
+                </div>
+                <div class="meals" sec:authorize="isAuthenticated()" th:if="${recommendation == null or recommendation.totalCalories == 0}">
+                    <div class="meal-box" style="width: 100%; text-align: center; padding: 30px 20px;">
+                        <p style="margin: 0; color: #555;">표시할 추천 식단이 없습니다. 인바디 분석을 통해 추천을 받아보세요!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="board-section">
+        <div class="section-title">
+            자유게시판
+            <button class="more-button" onclick="location.href='/board'">+더보기</button>
+        </div>
+        <div class="board">
+            <div th:if="${#lists.isEmpty(recentPosts)}" class="board-item"><span>게시글이 없습니다.</span></div>
+            <div th:each="post : ${recentPosts}" class="board-item">
+                <a th:href="@{'/board/'  + ${post.id}}"><span th:text="${post.title}">게시글 제목</span></a>
+                <span th:text="${post.memberName} + ' | ' + ${#temporals.format(post.createdAt, 'yyyy-MM-dd')}"></span>
+            </div>
+        </div>
+    </div>
+
+    <script th:inline="javascript">
+        /* <![CDATA[ */
+        const csrfToken = /*[[${_csrf.token}]]*/ null;
+        const csrfHeader = /*[[${_csrf.headerName}]]*/ null;
+
+        const updateWorkoutStatus = async (workoutId, isCompleted) => {
+            try {
+                const response = await fetch('/workout/updateStatus', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        [csrfHeader]: csrfToken
+                    },
+                    body: JSON.stringify({
+                        workoutId: workoutId,
+                        completed: isCompleted
+                    })
+                });
+
+                if (!response.ok) {
+                    alert('상태 업데이트에 실패했습니다.');
+                    const checkbox = document.querySelector(`input[onclick*="updateWorkoutStatus(${workoutId},"]`);
+                    if(checkbox) checkbox.checked = !isCompleted;
+                }
+            } catch (error) {
+                console.error('Error updating workout status:', error);
+                alert('업데이트 중 오류가 발생했습니다.');
+                const checkbox = document.querySelector(`input[onclick*="updateWorkoutStatus(${workoutId},"]`);
+                if(checkbox) checkbox.checked = !isCompleted;
+            }
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const memberIdElement = document.getElementById('mainMemberId');
+            if (!memberIdElement) return;
+
+            const memberId = memberIdElement.value;
+
+            const fetchAndDrawLineCharts = async () => {
+                try {
+                    const response = await fetch(`${window.location.origin}/main/profile/inbodyRecords/${memberId}`);
+                    if (!response.ok) throw new Error('데이터 로딩 실패');
+                    const allData = await response.json();
+                    if (!allData || allData.length === 0) {
+                        document.querySelector('.chart-boxes').innerHTML = `<div class="meal-box" style="width: 100%; text-align: center; padding: 30px 20px;"><p style="margin: 0; color: #555;">표시할 인바디 정보가 없습니다. 먼저 인바디 정보를 입력해주세요!</p></div>`;
+                        return;
+                    }
+                    allData.sort((a, b) => new Date(a.measurementDate) - new Date(b.measurementDate));
+                    const recentData = allData.slice(-5);
+                    const dates = recentData.map(r => r.measurementDate ? r.measurementDate.substring(0, 10) : '');
+                    const weights = recentData.map(r => r.weight ?? 0);
+                    const muscleMass = recentData.map(r => r.muscleMass ?? 0);
+                    const bodyFat = recentData.map(r => r.bodyFatPercentage ?? 0);
+                    renderLineChart('mainWeightChart', '체중(kg)', dates, weights, { border: 'rgba(54, 162, 235, 1)', bg: 'rgba(54, 162, 235, 0.2)' });
+                    renderLineChart('mainMuscleChart', '골격근량(kg)', dates, muscleMass, { border: 'rgba(75, 192, 192, 1)', bg: 'rgba(75, 192, 192, 0.2)' });
+                    renderLineChart('mainFatChart', '체지방률(%)', dates, bodyFat, { border: 'rgba(255, 99, 132, 1)', bg: 'rgba(255, 99, 132, 0.2)' });
+                } catch (error) {
+                    console.error('인바디 그래프 데이터 로딩 실패:', error);
+                    document.querySelector('.chart-boxes').innerHTML = '<p>그래프를 불러오는 중 오류가 발생했습니다.</p>';
+                }
+            };
+
+            const renderLineChart = (canvasId, label, dates, chartData, color) => {
+                const ctx = document.getElementById(canvasId);
+                if (!ctx) return;
+                new Chart(ctx, {
+                    type: 'line',
+                    data: { labels: dates, datasets: [{ label: label, data: chartData, borderColor: color.border, backgroundColor: color.bg, fill: true, tension: 0.1 }] },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        devicePixelRatio: 2 // This is the key change for higher resolution
+                    }
+                });
+            };
+
+            const drawDonutCharts = () => {
+                const recommendationData = /*[[${recommendation}]]*/ null;
+                if (!recommendationData || recommendationData.totalCalories === 0) return;
+                const renderDonutChart = (canvasId, mealPlan) => {
+                    const ctx = document.getElementById(canvasId);
+                    if (!ctx || !mealPlan || mealPlan.length === 0) return;
+                    const labels = mealPlan.map(item => item.foodName);
+                    const data = mealPlan.map(item => item.calories);
+                    const totalMealCalories = data.reduce((a, b) => a + b, 0);
+                    new Chart(ctx, {
+                        type: 'doughnut',
+                        data: {
+                            labels: labels,
+                            datasets: [{
+                                data: data,
+                                backgroundColor: ['#FFC107', '#28A745', '#007BFF', '#DC3545', '#6F42C1', '#fd7e14'],
+                                hoverOffset: 4
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            cutout: '60%',
+                            devicePixelRatio: 2, // This is the key change for higher resolution
+                            plugins: {
+                                legend: { display: false },
+                                title: { display: true, text: totalMealCalories + ' kcal', font: { size: 16 } },
+                                tooltip: {
+                                    callbacks: {
+                                        label: (context) => `${context.label || ''}: ${context.parsed || 0} kcal`
+                                    }
+                                }
+                            }
+                        }
+                    });
+                };
+                renderDonutChart('breakfastDonutChart', recommendationData.breakfastPlan);
+                renderDonutChart('lunchDonutChart', recommendationData.lunchPlan);
+                renderDonutChart('dinnerDonutChart', recommendationData.dinnerPlan);
+            };
+            fetchAndDrawLineCharts();
+            drawDonutCharts();
+        });
+        /* ]]> */
+    </script>
+</div>
+</html>

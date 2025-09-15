@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <title>id</title>
+  <style>
+    body {
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        height: 100vh;
+        position: relative;
+    }
+    h2 {
+        font-size: 50px;
+    }
+    .table-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: auto;
+        width: 80%;
+        text-align: center;
+    }
+    table {
+        border-collapse: collapse;
+        width: 80%;
+        text-align: center;
+    }
+    th {
+        background-color: #f2f2f2;
+        padding: 10px;
+        border: 1px solid #ddd;
+    }
+    td {
+        padding: 10px;
+        border: 1px solid #ddd;
+    }
+    .back-link {
+        position: absolute;
+        bottom: 40px;
+        left: 40px;
+    }
+  </style>
+</head>
+<body>
+<h2>회원정보</h2>
+<div class="table-container">
+  <table id="fist-table">
+    <thead>
+    <tr>
+      <th>id</th>
+      <th>email</th>
+      <th>password</th>
+      <th>name</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+      <td th:text="${member.id}"></td>
+      <td th:text="${member.memberEmail}"></td>
+      <td th:text="${member.memberPassword}"></td>
+      <td th:text="${member.memberName}"></td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+<a href="/main" class="back-link">메인 페이지로 이동</a>
+</body>
+</html>

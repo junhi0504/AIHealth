@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="content">
+  <head>
+    <meta charset="UTF-8" />
+    <title>게시판 목록</title>
+    <style>
+      /* 전체 페이지 기본 스타일 */
+ * {
+   box-sizing: border-box;
+ }
+
+ body {
+   font-family: 'Noto Sans KR', 'Segoe UI', sans-serif;
+   background-color: #f7f9fc;
+   color: #34495e;
+   margin: 0;
+   padding: 0;
+   line-height: 1.6;
+ }
+
+ /* 컨테이너 및 섹션 */
+ .board-container {
+   max-width: 960px;
+   margin: 40px auto;
+   padding: 30px;
+   background-color: #ffffff;
+   border-radius: 12px;
+   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+ }
+
+ /* 헤더 */
+ .board-h1 {
+   font-size: 2.2rem;
+   font-weight: 700;
+   text-align: center;
+   color: #2c3e50;
+   margin-bottom: 50px;
+ }
+
+ .board-h1-link {
+   text-decoration: none;
+   color: inherit;
+ }
+
+ /* 상단 바 (검색 & 정렬) */
+ .board-top-bar {
+   display: flex;
+   justify-content: flex-start;
+   align-items: center;
+   margin-bottom: 30px;
+   padding-bottom: 20px;
+   border-bottom: 1px solid #e0e6ed;
+ }
+
+ .board-search-form {
+   display: flex;
+   align-items: center;
+   gap: 8px;
+   flex-grow: 1;
+ }
+
+ /* 정렬 select */
+ .board-sort-select {
+   padding: 10px 12px;
+   font-size: 1rem;
+   border-radius: 8px;
+   border: 1px solid #dcdfe6;
+   background-color: #fff;
+   color: #34495e;
+   cursor: pointer;
+   transition: border-color 0.3s, box-shadow 0.3s, background-color 0.3s;
+ }
+
+ .board-sort-select:hover {
+   border-color: #4a90e2;
+ }
+
+ .board-sort-select:focus {
+   border-color: #4a90e2;
+   box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
+   outline: none;
+ }
+
+ /* 검색 input */
+ .board-search-form input[type="text"] {
+   padding: 10px 14px;
+   font-size: 1rem;
+   border: 1px solid #dcdfe6;
+   border-radius: 8px;
+   flex-grow: 1;
+   transition: border-color 0.3s, box-shadow 0.3s;
+ }
+
+ .board-search-form input[type="text"]:focus {
+   border-color: #4a90e2;
+   box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
+   outline: none;
+ }
+
+ /* 검색 버튼 */
+ .board-search-form button {
+   padding: 10px 18px;
+   background-color: #4a90e2;
+   color: white;
+   border: none;
+   border-radius: 8px;
+   cursor: pointer;
+   font-size: 1rem;
+   font-weight: 500;
+   transition: background-color 0.3s;
+ }
+
+ .board-search-form button:hover {
+   background-color: #357ABD;
+ }
+
+ /* 테이블 스타일 */
+ .board-table {
+   width: 100%;
+   border-collapse: collapse;
+   background-color: #fff;
+   font-size: 0.95rem;
+   border: 1px solid #e0e6ed;
+   border-radius: 10px;
+   overflow: hidden;
+ }
+
+ .board-table thead {
+   background-color: #f1f5f9;
+   font-weight: 600;
+   color: #2c3e50;
+ }
+
+ .board-table th, .board-table td {
+   padding: 15px;
+   text-align: center;
+   border-bottom: 1px solid #e9ecef;
+   white-space: nowrap;
+   overflow: hidden;
+   text-overflow: ellipsis;
+ }
+
+ .board-table th:nth-child(1), .board-table td:nth-child(1) { width: 10%; }
+ .board-table th:nth-child(2), .board-table td:nth-child(2) { width: 45%; }
+ .board-table th:nth-child(3), .board-table td:nth-child(3) { width: 15%; }
+ .board-table th:nth-child(4), .board-table td:nth-child(4) { width: 15%; }
+ .board-table th:nth-child(5), .board-table td:nth-child(5) { width: 7.5%; }
+ .board-table th:nth-child(6), .board-table td:nth-child(6) { width: 7.5%; }
+ .board-table th:nth-child(7), .board-table td:nth-child(7) { width: 7.5%; }
+
+ .board-table td.title-cell {
+   justify-content: center;
+ }
+
+ .board-table tbody tr:last-child td {
+   border-bottom: none;
+ }
+
+ .board-table tbody tr:hover {
+   background-color: #f8f9fa;
+   cursor: pointer;
+ }
+
+ /* 링크 스타일 */
+ .board-table td a {
+   color: #34495e;
+   transition: color 0.3s;
+ }
+
+ .board-table td a:hover {
+   color: #4a90e2;
+   text-decoration: none;
+ }
+
+ /* 페이징 */
+ .board-pagination {
+   margin-top: 30px;
+   text-align: center;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+ }
+
+ .board-pagination a, .board-pagination span {
+   display: inline-flex;
+   justify-content: center;
+   align-items: center;
+   margin: 0 4px;
+   width: 38px;
+   height: 38px;
+   font-size: 1rem;
+   border: 1px solid #dcdfe6;
+   background-color: #fff;
+   color: #555;
+   border-radius: 8px;
+   text-decoration: none;
+   transition: background-color 0.3s, color 0.3s;
+ }
+
+ .board-pagination a:hover {
+   background-color: #4a90e2;
+   color: #fff;
+   border-color: #4a90e2;
+ }
+
+ .board-pagination .board-current {
+   background-color: #4a90e2;
+   color: #fff;
+   font-weight: 600;
+   pointer-events: none;
+   border: 1px solid #4a90e2;
+ }
+
+ /* 하단 컨트롤 */
+ .board-bottom-controls {
+   text-align: right;
+   margin-top: 25px;
+ }
+
+ .board-bottom-controls .board-button {
+   display: inline-block;
+   padding: 10px 20px;
+   background-color: #2ecc71;
+   color: white;
+   border-radius: 8px;
+   text-decoration: none;
+   font-size: 1rem;
+   font-weight: 500;
+   transition: background-color 0.3s;
+ }
+
+ .board-bottom-controls .board-button:hover {
+   background-color: #27ae60;
+ }
+
+    </style>
+  </head>
+  <body>
+
+  <div class="board-container">
+    <h1 class="board-h1"><a class="board-h1-link" href="/board">게시판</a></h1>
+
+    <div class="board-top-bar">
+      <form class="board-search-form" th:action="@{/board}" method="get">
+
+        <select name="sort" th:value="${sort}" class="board-sort-select" onchange="this.form.submit()">
+          <option value="latest" th:selected="${sort == 'latest'}">최신순</option>
+          <option value="recommend" th:selected="${sort == 'recommend'}">추천순</option>
+        </select>
+
+
+        <input type="text" name="keyword" placeholder="제목 검색" th:value="${keyword}" />
+
+        <button type="submit">검색</button>
+      </form>
+    </div>
+
+    <table class="board-table">
+      <thead>
+      <tr>
+        <th>번호</th>
+        <th>제목</th>
+        <th>작성자</th>
+        <th>작성일</th>
+        <th>조회수</th>
+        <th>댓글 수</th>
+        <th>추천 수</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="board, stat : ${boardPage.content}" th:onclick="|location.href='@{/board/{id}(id=${board.id})}'|">
+        <td th:text="${boardPage.totalElements - (boardPage.number * boardPage.size) - stat.index}">번호</td>
+        <td class="title-cell">
+          <a th:href="@{'/board/' + ${board.id}}" th:text="${board.title}">제목</a>
+        </td>
+        <td th:text="${board.memberName}">작성자</td>
+        <td th:text="${#temporals.format(board.createdAt, 'yyyy-MM-dd HH:mm')}">날짜</td>
+        <td th:text="${board.viewCount}">0</td>
+        <td><span th:text="${board.commentCount}">0</span></td>
+        <td th:text="${board.recommendCount}">0</td>
+      </tr>
+      </tbody>
+    </table>
+
+    <div class="board-pagination" th:if="${boardPage.totalPages > 1}">
+      <a th:if="${boardPage.number > 0}" th:href="@{/board(page=0, keyword=${keyword})}">&laquo;</a>
+      <a th:if="${!boardPage.first}" th:href="@{/board(page=${boardPage.number - 1}, keyword=${keyword})}">&lsaquo;</a>
+
+      <th:block th:with="startPage=${T(java.lang.Math).max(0, boardPage.number - 2)}, endPage=${T(java.lang.Math).min(boardPage.totalPages - 1, boardPage.number + 2)}">
+        <a th:each="i : ${#numbers.sequence(startPage, endPage)}"
+           th:classappend="${i == boardPage.number} ? 'board-current' : ''"
+           th:href="@{/board(page=${i}, keyword=${keyword})}"
+           th:text="${i + 1}">1</a>
+      </th:block>
+
+      <a th:if="${!boardPage.last}" th:href="@{/board(page=${boardPage.number + 1}, keyword=${keyword})}">&rsaquo;</a>
+      <a th:if="${boardPage.number < boardPage.totalPages - 1}" th:href="@{/board(page=${boardPage.totalPages - 1}, keyword=${keyword})}">&raquo;</a>
+    </div>
+
+    <div class="board-bottom-controls">
+      <a class="board-button" th:href="@{/board/write}" th:if="${isLogin}">글쓰기</a>
+      <a class="board-button" href="/member/login"
+         th:unless="${isLogin}" onclick="alert('로그인 시에 이용 가능합니다.')">글쓰기</a>
+    </div>
+  </div>
+  </body>
+</div>
+</html>

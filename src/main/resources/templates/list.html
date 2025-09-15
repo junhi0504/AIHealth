@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <style>
+    body {
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        height: 100vh;
+    }
+    h2 {
+        font-size: 50px;
+    }
+    .table-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: auto;
+        width:80%;
+        text-align: center;
+    }
+    table {
+        border-collapse: collapse;
+        width:80%;
+        text-align: center;
+    }
+    th {
+        background-color: #f2f2f2;
+        padding: 10px;
+        border: 1px solid #ddd;
+    }
+    td {
+        padding: 10px;
+        border: 1px solid #ddd;
+    }
+  </style>
+</head>
+<body>
+<h2>Data list</h2>
+<div class="table-container">
+  <table id="fist-table">
+    <thead>
+    <tr>
+      <th>id</th>
+      <th>Email</th>
+      <th>Password</th>
+      <th>이름</th>
+      <th>상세조회</th>
+      <th>삭제</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="member: ${memberList}">
+      <td th:text="${member.id}"></td>
+      <td th:text="${member.memberEmail}"></td>
+      <td th:text="${member.memberPassword}"></td>
+      <td th:text="${member.memberName}"></td>
+      <td>
+        <a th:href="@{|/member/${member.id}|}">조회</a>
+      </td>
+      <td>
+        <a th:href="@{|/member/delete/${member.id}|}">삭제</a>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+</body>
+</html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>분석 결과</title>
+</head>
+<body th:fragment="content">
+
+<div class="inbody-result-container">
+  <h2>분석 기반 추천 결과</h2>
+
+  <div class="section-title">🏋️ 운동 추천</div>
+  <div class="recommendation-text" id="exercise"
+       th:text="${recommendationResult != null ? recommendationResult.exerciseRecommendation : '결과를 불러올 수 없습니다.'}">
+  </div>
+
+  <div class="section-title">🥗 식단 추천</div>
+  <div class="recommendation-text" id="diet"
+       th:text="${recommendationResult != null ? recommendationResult.dietRecommendation : '결과를 불러올 수 없습니다.'}">
+  </div>
+
+  <div style="display: flex; gap: 10px; margin-top: 30px; justify-content: center;">
+    <a class="btn" href="/inbody/form">다시 입력</a>
+    <a class="btn" href="/main">메인으로</a>
+  </div>
+</div>
+
+</body>
+</html>

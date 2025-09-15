@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <title>회원가입</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f7f9fc;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background-color: #fff;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            padding: 40px 30px;
+            width: 400px;
+            text-align: center;
+        }
+
+        .title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .signup-form label {
+            display: block;
+            text-align: left;
+            font-size: 14px;
+            color: #333;
+            margin-bottom: 5px;
+            margin-top: 15px;
+        }
+
+        .signup-form input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+            outline: none;
+        }
+
+        .signup-form input:focus {
+            border-color: #4d90fe;
+            box-shadow: 0 0 5px rgba(77, 144, 254, 0.5);
+        }
+
+        .submit-button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 0;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .submit-button:hover {
+            background-color: #0056b3;
+        }
+
+        #check-result, #password-error, #name-check-result {
+            font-size: 12px;
+            margin-top: -10px;
+            margin-bottom: 10px;
+            text-align: left;
+            color: red;
+        }
+    </style>
+    <script
+            src="https://code.jquery.com/jquery-3.6.3.min.js"
+            integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU="
+            crossorigin="anonymous"></script>
+</head>
+<body>
+<div class="container">
+    <h1 class="title">회원가입</h1>
+    <form action="/member/save" method="post" class="signup-form" id="signup-form">
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+
+        <label for="username">사용자 이름</label>
+        <input type="text" name="memberName" id="username" placeholder="10자리 이내로 입력" onblur="nameCheck()" maxlength="10">
+        <p id="name-check-result"></p>
+
+        <label for="email">아이디</label>
+        <input type="text" name="memberEmail" id="email" placeholder="10자리 이내로 입력" onblur="emailCheck()" maxlength="10">
+        <p id="check-result"></p>
+
+        <label for="password">비밀번호</label>
+        <input type="password" name="memberPassword" id="password" placeholder="********">
+
+        <label for="confirm-password">비밀번호 확인</label>
+        <input type="password" id="confirm-password" placeholder="********">
+        <p id="password-error"></p>
+
+        <button type="submit" class="submit-button">회원가입</button>
+    </form>
+</div>
+<script>
+    // ✨ [추가] AJAX 요청 보내기 전, 헤더에 CSRF 토큰을 설정하는 코드
+    const token = $("meta[name='_csrf']").attr("content");
+    const header = $("meta[name='_csrf_header']").attr("content");
+    $(document).ajaxSend(function(e, xhr, options) {
+        xhr.setRequestHeader(header, token);
+    });
+
+    const emailCheck = () => {
+        const email = document.getElementById("email").value;
+        const checkResult = document.getElementById("check-result");
+        if (!email) {
+            checkResult.style.color = "red";
+            checkResult.innerText = "아이디를 입력하세요.";
+            return;
+        }
+        checkResult.style.color = "blue";
+        checkResult.innerText = "Checking...";
+        $.ajax({
+            type: "post",
+            url: "/member/email-check",
+            data: { "memberEmail": email },
+            success: function(res) {
+                if (res === "ok") {
+                    checkResult.style.color = "green";
+                    checkResult.innerText = "사용 가능한 아이디입니다.";
+                } else {
+                    checkResult.style.color = "red";
+                    checkResult.innerText = "이미 사용 중인 아이디입니다.";
+                }
+            },
+            error: function() {
+                checkResult.style.color = "orange";
+                checkResult.innerText = "서버 오류. 잠시 후 다시 시도하세요.";
+            }
+        });
+    };
+
+    const nameCheck = () => {
+        const name = document.getElementById("username").value;
+        const nameResult = document.getElementById("name-check-result");
+         if (!name) {
+            nameResult.style.color = "red";
+            nameResult.innerText = "사용자 이름을 입력하세요.";
+            return;
+         }
+        nameResult.style.color = "blue";
+        nameResult.innerText = "Checking...";
+        $.ajax({
+            type: "post",
+            url: "/member/name-check",
+            data: { "memberName": name },
+            success: function(res) {
+                if (res === "ok") {
+                    nameResult.style.color = "green";
+                    nameResult.innerText = "사용 가능한 이름입니다.";
+                } else {
+                    nameResult.style.color = "red";
+                    nameResult.innerText = "이미 사용 중인 이름입니다.";
+                }
+            },
+            error: function() {
+                nameResult.style.color = "orange";
+                nameResult.innerText = "서버 오류. 잠시 후 다시 시도하세요.";
+            }
+        });
+    };
+
+    document.getElementById("signup-form").addEventListener("submit", function (event) {
+        const password = document.getElementById("password").value;
+        const confirmPassword = document.getElementById("confirm-password").value;
+        const passwordError = document.getElementById("password-error");
+
+        if (password !== confirmPassword) {
+            event.preventDefault();
+            passwordError.innerText = "비밀번호가 일치하지 않습니다.";
+        } else {
+            passwordError.innerText = "";
+        }
+    });
+</script>
+</body>
+</html>

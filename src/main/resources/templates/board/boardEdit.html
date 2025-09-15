@@ -1,0 +1,45 @@
+<div th:fragment="content">
+  <div class="edit-container">
+    <h1 class="edit-title">게시글 수정</h1>
+
+    <form class="edit-form" th:action="@{/board/edit/{id}(id=${board.id})}" method="post">
+      <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+
+      <!-- 제목 -->
+      <label class="edit-label">
+        제목:
+        <input class="edit-input" type="text" name="title" th:value="${board.title}" required>
+      </label>
+
+      <!-- 내용 -->
+      <label class="edit-label">
+        내용:
+        <textarea class="edit-textarea" name="content" rows="10" th:text="${board.content}" required></textarea>
+      </label>
+
+      <!-- 이미지 영역 -->
+      <div class="image-upload-container">
+        <div id="imageDisplay" class="image-display">
+          <!-- 기존 이미지 -->
+          <div th:each="img : ${board.images}" class="existing-image">
+            <img th:src="@{${img.filePath}}" th:alt="${img.fileName}"
+                 style="width:150px;height:150px;object-fit:cover;margin:5px;" />
+            <button type="button" class="remove-existing-image" th:data-id="${img.id}">삭제</button>
+          </div>
+        </div>
+
+        <button type="button" id="addImageBtn">사진 추가</button>
+        <input type="file" id="imageInput" accept="image/*" multiple style="display:none;">
+      </div>
+
+      <!-- hidden input -->
+      <input type="hidden" id="imageData" name="imageData" />
+      <button type="submit" class="edit-button">수정 완료</button>
+    </form>
+
+    <a th:href="@{/board/{id}(id=${board.id})}" class="edit-back-link">← 상세 페이지로</a>
+  </div>
+</div>
+
+<!-- 공용 JS 연결 -->
+<script th:src="@{/js/boardWrite.js}"></script>

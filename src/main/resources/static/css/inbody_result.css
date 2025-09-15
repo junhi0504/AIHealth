@@ -1,0 +1,47 @@
+.inbody-result-container {
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 0 15px rgba(0,0,0,0.1);
+  width: 90%;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.inbody-result-container h2 {
+  text-align: center;
+  color: #4CAF50;
+  margin-bottom: 30px;
+}
+
+.inbody-result-container .section-title {
+  font-weight: bold;
+  margin-top: 30px;
+  color: #333;
+  font-size: 18px;
+}
+
+.inbody-result-container .recommendation-text {
+  margin-top: 10px;
+  line-height: 1.8;
+  white-space: pre-wrap;
+  color: #444;
+}
+
+.inbody-result-container .btn {
+  display: inline-block;
+  background-color: #4CAF50;
+  color: white;
+  padding: 12px 20px;
+  text-align: center;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+  margin: 0 10px 0 0;
+  font-size: 16px;
+  text-decoration: none; /* a 태그일 경우를 대비 */
+}
+
+.inbody-result-container .btn:hover {
+  background-color: #45a049;
+}

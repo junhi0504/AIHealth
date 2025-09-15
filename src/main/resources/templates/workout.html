@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>운동일지</title>
+    <!-- CSS 링크 -->
+    <link rel="stylesheet" th:href="@{/css/workout.css}">
+</head>
+<body>
+<div th:fragment="content">
+    <div class="workout-container">
+        <h2 class="page-title">운동일지</h2>
+
+        <!-- 날짜 조회 폼 -->
+        <form th:action="@{/workout}" method="get" class="date-form">
+            <div class="form-group">
+                <label for="workoutDate">운동 날짜:</label>
+                <input type="date" id="workoutDate" name="workoutDate"
+                       th:value="${workoutDate != null ? workoutDate : #temporals.format(#temporals.createNow(), 'yyyy-MM-dd')}" />
+                <button type="submit" class="btn-primary btn-small">조회</button>
+            </div>
+        </form>
+
+        <!-- 운동 저장 폼 -->
+        <form th:action="@{/workout/save}" method="post" th:object="${completedWorkoutsWrapper}">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+            <input type="hidden" name="workoutDate"
+                   th:value="${workoutDate != null ? workoutDate : #temporals.format(#temporals.createNow(), 'yyyy-MM-dd')}" />
+
+            <div th:if="${todayWorkouts != null and !#lists.isEmpty(todayWorkouts)}" class="workout-records">
+                <h3>저장된 운동 기록</h3>
+                <div th:each="workout : ${todayWorkouts}" class="record-item">
+                    <span><span th:text="${workout.exerciseName}">운동명</span></span>
+                    <span class="exercise-details" th:if="${workout.sets != null and workout.reps != null}" th:text="${workout.sets + '세트 X ' + workout.reps + '회'}"></span>
+                    <span class="record-status" th:text="${workout.completed ? '완료' : '미완료'}" th:classappend="${workout.completed} ? 'status-completed' : 'status-incomplete'"></span>
+                </div>
+            </div>
+
+            <div class="workout-box">
+                <div class="title-and-checkbox" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h3 style="margin: 3;">운동 목표</h3>
+                    <div th:if="${todayWorkouts != null and !#lists.isEmpty(todayWorkouts)}"
+                         class="check-all-row"
+                         style="display: flex; align-items: center; gap: 8px;">
+                        <label for="checkAll" style="margin: 0;">모든 운동 체크</label>
+                        <input type="checkbox" id="checkAll" onclick="toggleAll(this)" />
+                    </div>
+                </div>
+
+                <div th:each="workout, iterStat : *{completedWorkouts}" class="workout-item" th:id="'workout_' + ${workout.id}">
+                    <div class="item-details">
+                        <input type="checkbox" th:id="${'check_' + iterStat.index}"
+                               th:field="*{completedWorkouts[__${iterStat.index}__].completed}" />
+                        <label th:for="${'check_' + iterStat.index}" th:text="${workout.exerciseName}">운동 이름</label>
+                    </div>
+                    <span class="exercise-details" th:if="${workout.sets != null && workout.reps != null}" th:text="${workout.sets + '세트 X ' + workout.reps + '회'}"></span>
+                    <div class="action-buttons">
+                        <button type="button" class="btn-delete" th:onclick="'deleteWorkout(' + ${workout.id} + ')'">삭제</button>
+                    </div>
+                    <input type="hidden" th:field="*{completedWorkouts[__${iterStat.index}__].id}" />
+                    <input type="hidden" th:field="*{completedWorkouts[__${iterStat.index}__].exerciseName}" />
+                    <input type="hidden" th:field="*{completedWorkouts[__${iterStat.index}__].workoutDate}" />
+                    <input type="hidden" th:field="*{completedWorkouts[__${iterStat.index}__].memberId}" />
+                    <input type="hidden" th:field="*{completedWorkouts[__${iterStat.index}__].sets}" />
+                    <input type="hidden" th:field="*{completedWorkouts[__${iterStat.index}__].reps}" />
+                </div>
+
+                <div th:if="${todayWorkouts == null or #lists.isEmpty(todayWorkouts)}" class="no-workout" style="margin-bottom: 10px;">
+                    선택한 날짜에 운동 추천 목록이 없습니다.
+                </div>
+
+                <a href="javascript:void(0);" onclick="openAddWorkoutPopup()" class="add-link">운동 추가하기</a>
+            </div>
+
+            <div class="save-button-container">
+                <button type="submit">변경 내용 저장</button>
+            </div>
+        </form>
+    </div>
+
+    <script th:inline="javascript">
+        /* <![CDATA[ */
+        const csrfToken = /*[[${_csrf.token}]]*/ null;
+        const csrfHeader = /*[[${_csrf.headerName}]]*/ null;
+
+        function toggleAll(source) {
+            const checkboxes = document.querySelectorAll('input[type="checkbox"][name$=".completed"]');
+            checkboxes.forEach(cb => cb.checked = source.checked);
+        }
+
+        function deleteWorkout(workoutId) {
+            if (!confirm('이 운동을 삭제하시겠습니까?')) return;
+
+            fetch('/workout/delete/' + workoutId, {
+                method: 'DELETE',
+                headers: {
+                    [csrfHeader]: csrfToken
+                }
+            })
+            .then(res => {
+                if (res.ok) {
+                    const workoutBoxItem = document.getElementById('workout_' + workoutId);
+                    if (workoutBoxItem) {
+                        workoutBoxItem.remove();
+                    }
+
+                    const exerciseNameElement = workoutBoxItem.querySelector('label');
+                    const exerciseName = exerciseNameElement ? exerciseNameElement.textContent : null;
+
+                    if (exerciseName) {
+                        const savedRecords = document.querySelectorAll('.workout-records .record-item');
+                        savedRecords.forEach(record => {
+                            const recordName = record.querySelector('span:first-child span');
+                            if (recordName && recordName.textContent.trim() === exerciseName.trim()) {
+                                record.remove();
+                            }
+                        });
+                    }
+                } else {
+                    alert('삭제 실패: 서버 오류');
+                }
+            })
+            .catch(() => alert('삭제 중 오류가 발생했습니다. 네트워크 문제일 수 있습니다.'));
+        }
+
+        function openAddWorkoutPopup() {
+            const workoutDate = document.querySelector('input[name="workoutDate"]')?.value || '';
+            window.open('/workout/add?workoutDate=' + encodeURIComponent(workoutDate), 'addWorkoutPopup', 'width=900,height=700,resizable=yes,scrollbars=yes');
+        }
+        /* ]]> */
+    </script>
+</div>
+</body>
+</html>

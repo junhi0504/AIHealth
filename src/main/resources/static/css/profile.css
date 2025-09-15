@@ -1,0 +1,410 @@
+:root {
+    --primary-color: #3b82f6;
+    --primary-dark: #2563eb;
+    --secondary-color: #60a5fa;
+    --text-dark: #1f2937;
+    --text-light: #4b5563;
+    --bg-light: #f3f4f6;
+    --bg-white: #ffffff;
+    --border-color: #e5e7eb;
+    --shadow-light: 0 4px 6px rgba(0, 0, 0, 0.08);
+    --shadow-medium: 0 10px 15px rgba(0, 0, 0, 0.1);
+    --shadow-hover: 0 15px 20px rgba(0, 0, 0, 0.12);
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--bg-light);
+    color: var(--text-light);
+    line-height: 1.6;
+}
+
+.profile-main {
+    margin-top: 30px !important;
+    padding-bottom: 60px;
+    width: 100%;
+}
+
+.container {
+    display: flex;
+    gap: 32px;
+    max-width: 1280px;
+    margin: 0 auto;
+    flex-wrap: wrap;
+    padding: 0 16px;
+}
+
+/* 왼쪽 컨테이너 - 프로필 정보 및 버튼 */
+.left-container {
+    flex: 1.2;
+    min-width: 300px;
+    background: var(--bg-white);
+    border-radius: 12px;
+    box-shadow: var(--shadow-medium);
+    padding: 40px 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.left-container h2 {
+    margin-bottom: 30px;
+    font-size: 2rem;
+    color: var(--primary-dark);
+    font-weight: 700;
+    line-height: 1.2;
+    border-bottom: 3px solid var(--primary-color);
+    padding-bottom: 12px;
+    width: 100%;
+}
+
+.button-group {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 25px;
+    width: 100%;
+}
+
+.button-group a {
+    display: block;
+    background-color: var(--primary-color);
+    color: var(--bg-white);
+    border-radius: 8px;
+    padding: 16px 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+    text-align: center;
+    text-decoration: none;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    box-shadow: var(--shadow-light);
+}
+
+.button-group a:hover {
+    background-color: var(--primary-dark);
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-hover);
+}
+
+/* 프로필 이미지 스타일링 */
+.profile-image-container {
+    position: relative;
+    width: 150px;
+    height: 150px;
+    margin-bottom: 20px;
+    border-radius: 50%;
+    overflow: hidden;
+    box-shadow: var(--shadow-medium);
+}
+
+.profile-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.profile-image-container:hover .profile-image {
+    transform: scale(1.1);
+}
+
+.image-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    cursor: pointer;
+}
+
+.profile-image-container:hover .image-overlay {
+    opacity: 1;
+}
+
+.overlay-button {
+    background-color: transparent;
+    border: none;
+    color: var(--bg-white);
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 5px 0;
+    transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.overlay-button:hover {
+    color: var(--secondary-color);
+    transform: scale(1.1);
+}
+
+/* 메시지 박스 스타일링 */
+.message-box {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 20px 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    text-align: center;
+    display: none;
+    border: 1px solid var(--border-color);
+    max-width: 400px;
+}
+
+.message-box p {
+    font-size: 1.1rem;
+    color: var(--text-dark);
+    margin-bottom: 20px;
+}
+
+.message-box-buttons button {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    margin: 0 5px;
+    transition: background-color 0.2s ease;
+}
+
+.message-box-buttons button:hover {
+    background-color: var(--primary-dark);
+}
+
+/* 오른쪽 컨테이너 - 추천 정보 */
+.right-container {
+    flex: 1;
+    min-width: 320px;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+}
+
+.right-top, .right-bottom {
+    background: var(--bg-white);
+    border-radius: 12px;
+    box-shadow: var(--shadow-medium);
+    padding: 30px;
+    transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.right-top:hover, .right-bottom:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-hover);
+}
+
+.right-top h3, .right-bottom h3 {
+    color: var(--primary-color);
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: 10px;
+    font-weight: 700;
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+}
+
+.right-top p, .right-bottom p {
+    line-height: 1.6;
+    color: var(--text-dark);
+    white-space: pre-wrap;
+    min-height: 50px;
+}
+
+/* 그래프 및 표 섹션 */
+#graphTableWrapper {
+    max-width: 1280px;
+    margin: 30px auto 0;
+    padding: 0 16px;
+}
+
+.graph-section {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+    justify-content: center;
+}
+
+.graph-container {
+    flex: 1 1 30%;
+    min-width: 280px;
+    background: var(--bg-white);
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: var(--shadow-light);
+    transition: box-shadow 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.graph-container:hover {
+    box-shadow: var(--shadow-medium);
+}
+
+.graph-container h3 {
+    color: var(--text-dark);
+    font-weight: 600;
+    margin-bottom: 15px;
+    text-align: center;
+    font-size: 1.3rem;
+}
+
+canvas {
+    width: 100% !important;
+    height: 250px !important;
+}
+
+/* 테이블 섹션 */
+#tableSection {
+    margin-top: 40px;
+    background: var(--bg-white);
+    border-radius: 12px;
+    box-shadow: var(--shadow-medium);
+    padding: 25px;
+}
+
+#tableSection h3 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: var(--text-dark);
+    font-size: 1.5rem;
+}
+
+#tableSection label {
+    font-weight: 600;
+    color: var(--text-dark);
+}
+
+#tableSection input[type="date"] {
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    padding: 8px 12px;
+    font-size: 1rem;
+    transition: border-color 0.2s;
+}
+
+#tableSection input[type="date"]:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+}
+
+#tableSection button {
+    background-color: var(--primary-color);
+    color: var(--bg-white);
+    border: none;
+    border-radius: 6px;
+    padding: 8px 16px;
+    cursor: pointer;
+    font-weight: 600;
+    margin-left: 10px;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+#tableSection button:hover {
+    background-color: var(--primary-dark);
+    transform: translateY(-1px);
+}
+
+table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin-top: 20px;
+    font-size: 1rem;
+    overflow: hidden;
+    border-radius: 8px;
+}
+
+#inbodyTable thead th {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 12px;
+    text-align: center;
+    border: 1px solid var(--primary-color);
+}
+
+#inbodyTable tbody tr:nth-child(odd) {
+    background-color: #f9fafb;
+}
+
+#inbodyTable tbody td {
+    padding: 12px;
+    text-align: center;
+    border: 1px solid var(--border-color);
+    color: var(--text-dark);
+}
+
+#noDataMessage {
+    font-size: 1.2rem;
+    color: #888;
+    margin: 40px 0;
+    text-align: center;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 1024px) {
+    .container {
+        flex-direction: column;
+        gap: 24px;
+    }
+    .left-container, .right-container {
+        width: 100%;
+        min-width: 0;
+    }
+    .right-container {
+        flex-direction: row;
+        gap: 20px;
+    }
+    .right-top, .right-bottom {
+        flex: 1;
+    }
+    .graph-section {
+        flex-direction: column;
+        align-items: center;
+    }
+    .graph-container {
+        flex: 1 1 100%;
+        max-width: 500px;
+        min-width: unset;
+    }
+}
+
+@media (max-width: 600px) {
+    .container {
+        gap: 20px;
+    }
+    .right-container {
+        flex-direction: column;
+    }
+    .left-container, .right-top, .right-bottom, .graph-container, #tableSection {
+        padding: 20px;
+    }
+    .left-container h2 {
+        font-size: 1.6rem;
+    }
+    .right-top h3, .right-bottom h3, #tableSection h3 {
+        font-size: 1.3rem;
+    }
+    #tableSection label {
+        display: block;
+        margin-bottom: 8px;
+    }
+    #tableSection input[type="date"] {
+        width: 100%;
+    }
+    #tableSection button {
+        margin-top: 8px;
+        margin-left: 0;
+        width: 100%;
+    }
+}

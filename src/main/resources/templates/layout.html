@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8" />
+    <title th:text="${pageTitle}">AIHT</title>
+
+    <!-- 공통 CSS -->
+    <link rel="stylesheet" href="/css/common.css" />
+    <link rel="stylesheet" href="/css/main.css" />
+    <link rel="stylesheet" href="/css/profile.css" />
+    <link rel="stylesheet" href="/css/board.css" />
+    <link rel="stylesheet" href="/css/board_form.css" />
+    <link rel="stylesheet" href="/css/board_write.css" />
+    <link rel="stylesheet" href="/css/board_edit.css" />
+    <link rel="stylesheet" href="/css/workout.css" />
+    <link rel="stylesheet" href="/css/inbody_result.css" />
+    <link rel="stylesheet" href="/css/inbody_input.css" />
+    <link rel="stylesheet" href="/css/inbody_form.css" />
+
+</head>
+<body>
+<header>
+    <h1 onclick="location.href='/main'">AIHT</h1>
+    <nav>
+        <a href="/inbody/form">인바디 분석</a>
+        <a href="/workout">운동일지</a>
+        <a href="/consult">AI 상담</a>
+        <a href="/board">자유게시판</a>
+        <a href="/main/profile">회원정보</a>
+    </nav>
+    <div>
+        <div class="auth-buttons">
+            <p sec:authorize="isAuthenticated()">
+                <span th:if="${loginMember != null}" th:text="${loginMember.memberName}"></span>
+                <span th:if="${loginMember == null}" sec:authentication="name"></span>
+                님 안녕하세요!
+            </p>
+            <form sec:authorize="isAuthenticated()" th:action="@{/member/logout}" method="post">
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                <button type="submit" class="auth-button-link">로그아웃</button>
+            </form>
+
+            <a sec:authorize="isAnonymous()" href="/member/login" class="auth-button-link">로그인</a>
+            <a sec:authorize="isAnonymous()" href="/member/save" class="auth-button-link">회원가입</a>
+        </div>
+    </div>
+</header>
+
+<main th:class="${mainClass}" th:replace="~{${contentTemplate} :: content}"></main>
+
+<!-- Chart.js 예시 -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script th:src="@{/js/profile.js}"></script>
+
+<!-- 게시글 작성/수정용 JS 공통 로드 -->
+<script th:src="@{/js/boardWrite.js}"></script>
+
+</body>
+</html>
