@@ -1,47 +1,102 @@
+/* ================================
+   인바디 입력 폼 컨테이너
+   ================================ */
 .inbody-input-container {
-  background: #fff;
-  max-width: 500px;
-  margin: 0 auto;
-  padding: 40px 30px;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  background: #fdfdfd;
+  max-width: 520px;
+  margin: 50px auto;
+  padding: 40px 35px;
+  border-radius: 16px;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  transition: 0.3s;
 }
 
-.inbody-input-container h1 {
+.inbody-input-container:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+}
+
+/* 제목 */
+.inbody-input-container .page-title {
   text-align: center;
-  margin-top: 0;
-  margin-bottom: 30px;
-  color: #333;
+  margin-bottom: 40px; /* 기존 30px에서 40px로 늘려 제목과 본문 간격 증가 */
+  color: #222;
+  font-size: 26px;
+  font-weight: 700;
 }
 
+/* 레이블과 input */
 .inbody-input-container label {
   display: block;
-  margin-bottom: 10px;
-  font-weight: 500;
-  color: #333;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #555;
 }
 
 .inbody-input-container input[type="number"],
+.inbody-input-container input[type="date"],
 .inbody-input-container select {
   width: 100%;
-  padding: 10px;
-  margin-bottom: 20px;
+  padding: 12px 14px;
+  margin-bottom: 25px; /* 간격을 20px -> 25px로 늘려 버튼과 충분히 띄움 */
   border: 1px solid #ccc;
-  border-radius: 8px;
-  font-size: 14px;
+  border-radius: 10px;
+  font-size: 15px;
+  background-color: #fff;
+  transition: 0.3s;
 }
 
-.inbody-input-container button {
+.inbody-input-container input[type="number"]:focus,
+.inbody-input-container input[type="date"]:focus,
+.inbody-input-container select:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 8px rgba(0,123,255,0.25);
+  outline: none;
+}
+
+/* measurementDate 달력 */
+.inbody-input-container input#measurementDate {
+  width: 150px; /* 달력 가로폭 */
+  max-width: 100%;
+}
+
+/* 제출 버튼 */
+.inbody-input-container button[type="submit"] {
   width: 100%;
-  padding: 12px;
+  padding: 14px;
   background-color: #007bff;
-  color: white;
+  color: #fff;
   font-size: 16px;
+  font-weight: 600;
   border: none;
-  border-radius: 8px;
+  border-radius: 10px;
   cursor: pointer;
+  margin-top: 20px; /* 버튼 위 간격 추가 */
+  transition: 0.3s;
 }
 
-.inbody-input-container button:hover {
+.inbody-input-container button[type="submit"]:hover {
   background-color: #0056b3;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.18);
+}
+
+.inbody-input-container button[type="submit"]:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+}
+
+/* ================================
+   반응형
+   ================================ */
+@media (max-width: 600px) {
+  .inbody-input-container {
+    padding: 30px 20px;
+    margin: 30px 15px;
+  }
+  .inbody-input-container .page-title {
+    font-size: 22px;
+    margin-bottom: 35px;
+  }
 }

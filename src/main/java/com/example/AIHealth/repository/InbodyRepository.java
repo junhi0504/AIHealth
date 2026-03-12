@@ -10,15 +10,18 @@ import java.util.Optional;
 
 public interface InbodyRepository extends JpaRepository<InbodyEntity, Long> {
 
+    // 특정 회원 + 특정 날짜 조회
     Optional<InbodyEntity> findByMemberAndMeasurementDate(MemberEntity member, LocalDate measurementDate);
 
+    // 회원 기준, measurementDate 기준 최신 1개 조회
     Optional<InbodyEntity> findTopByMemberOrderByMeasurementDateDesc(MemberEntity member);
 
+    // 회원 ID 기준, measurementDate 기준 최신 1개 조회
+    Optional<InbodyEntity> findTopByMember_IdOrderByMeasurementDateDesc(Long memberId);
+
+    // 회원 기준, measurementDate 기준 전체 리스트 조회 (최신 순)
     List<InbodyEntity> findAllByMemberOrderByMeasurementDateDesc(MemberEntity member);
 
-    // Member의 Id로 InbodyEntity 리스트를 찾고, 측정 날짜 오름차순으로 정렬
+    // 회원 ID 기준, measurementDate 기준 전체 리스트 조회 (오름차순)
     List<InbodyEntity> findByMember_IdOrderByMeasurementDateAsc(Long memberId);
-
-    // Member의 Id로 InbodyEntity를 찾고, ID 내림차순으로 정렬해서 가장 첫번째(최신) 데이터 1개를 가져옴
-    Optional<InbodyEntity> findTopByMember_IdOrderByIdDesc(Long memberId);
 }

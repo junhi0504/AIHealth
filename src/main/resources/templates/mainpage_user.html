@@ -57,20 +57,6 @@
         </div>
     </div>
 
-    <div class="board-section">
-        <div class="section-title">
-            자유게시판
-            <button class="more-button" onclick="location.href='/board'">+더보기</button>
-        </div>
-        <div class="board">
-            <div th:if="${#lists.isEmpty(recentPosts)}" class="board-item"><span>게시글이 없습니다.</span></div>
-            <div th:each="post : ${recentPosts}" class="board-item">
-                <a th:href="@{'/board/'  + ${post.id}}"><span th:text="${post.title}">게시글 제목</span></a>
-                <span th:text="${post.memberName} + ' | ' + ${#temporals.format(post.createdAt, 'yyyy-MM-dd')}"></span>
-            </div>
-        </div>
-    </div>
-
     <script th:inline="javascript">
         /* <![CDATA[ */
         const csrfToken = /*[[${_csrf.token}]]*/ null;
@@ -142,7 +128,7 @@
                     options: {
                         responsive: true,
                         maintainAspectRatio: false,
-                        devicePixelRatio: 2 // This is the key change for higher resolution
+                        devicePixelRatio: 2
                     }
                 });
             };
@@ -170,7 +156,7 @@
                             responsive: true,
                             maintainAspectRatio: false,
                             cutout: '60%',
-                            devicePixelRatio: 2, // This is the key change for higher resolution
+                            devicePixelRatio: 2,
                             plugins: {
                                 legend: { display: false },
                                 title: { display: true, text: totalMealCalories + ' kcal', font: { size: 16 } },

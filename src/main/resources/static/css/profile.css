@@ -36,8 +36,7 @@ body {
 
 /* 왼쪽 컨테이너 - 프로필 정보 및 버튼 */
 .left-container {
-    flex: 1.2;
-    min-width: 300px;
+    flex: 1.1;
     background: var(--bg-white);
     border-radius: 12px;
     box-shadow: var(--shadow-medium);
@@ -186,7 +185,7 @@ body {
 
 /* 오른쪽 컨테이너 - 추천 정보 */
 .right-container {
-    flex: 1;
+    flex: 1.5; /* 기존 1 -> 1.5로 넓게 */
     min-width: 320px;
     display: flex;
     flex-direction: column;

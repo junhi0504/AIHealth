@@ -60,15 +60,18 @@ public class ProfileController {
     public List<InbodyResponse> getInbodyRecords(@PathVariable Long memberId) {
         List<InbodyResponse> list = inbodyService.getInbodyRecords(memberId);
         for (InbodyResponse r : list) {
+            if (r.getHeight() == null) r.setHeight(0.0);                // ✨ 추가
             if (r.getWeight() == null) r.setWeight(0.0);
             if (r.getMuscleMass() == null) r.setMuscleMass(0.0);
             if (r.getBodyFatPercentage() == null) r.setBodyFatPercentage(0.0);
+            if (r.getVisceralFatLevel() == null) r.setVisceralFatLevel(0); // ✨ 추가
             if (r.getMeasurementDate() == null) {
                 r.setMeasurementDate(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
             }
         }
         return list;
     }
+
 
     @GetMapping("/api/recommendations/{memberId}")
     @ResponseBody

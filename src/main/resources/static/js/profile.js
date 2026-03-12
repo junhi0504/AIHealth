@@ -132,7 +132,7 @@ document.addEventListener('DOMContentLoaded', () => {
         tableBody.innerHTML = ''; // 기존 내용을 초기화
 
         if (dataToRender.length === 0) {
-            tableBody.innerHTML = `<tr><td colspan="4">해당 날짜에 측정한 인바디 정보가 없습니다.</td></tr>`;
+            tableBody.innerHTML = `<tr><td colspan="6">해당 날짜에 측정한 인바디 정보가 없습니다.</td></tr>`;
             return;
         }
 
@@ -140,13 +140,16 @@ document.addEventListener('DOMContentLoaded', () => {
             const tr = document.createElement('tr');
             tr.innerHTML = `
                 <td>${formatDate(r.measurementDate)}</td>
+                <td>${(r.height ?? 0).toFixed(1)}</td>           <!-- 키 추가 -->
                 <td>${(r.weight ?? 0).toFixed(1)}</td>
                 <td>${(r.muscleMass ?? 0).toFixed(1)}</td>
                 <td>${(r.bodyFatPercentage ?? 0).toFixed(1)}</td>
+                <td>${r.visceralFatLevel ?? 0}</td>               <!-- 내장지방 추가 -->
             `;
             tableBody.appendChild(tr);
         });
     }
+
 
     /**
      * 서버에서 데이터를 가져와 차트와 테이블을 표시하는 메인 함수
