@@ -1,17 +1,17 @@
 # AI Health
 
-AI Health는 사용자의 체성분 데이터를 기반으로 맞춤 운동을 추천하고  
+AI Health는 사용자의 체성분 데이터를 기반으로 맞춤 운동을 추천하고  
 운동 기록을 관리할 수 있는 헬스 관리 웹 서비스입니다.
 
-사용자는 인바디 정보를 입력하여 개인에게 맞는 운동을 추천받을 수 있으며  
+사용자는 인바디 정보를 입력하여 개인에게 맞는 운동을 추천받을 수 있으며  
 운동 일지를 작성해 자신의 운동 기록을 체계적으로 관리할 수 있습니다.
 
 ---
 
 ## 프로젝트 소개
 
-헬스를 처음 시작하는 사용자들은 자신의 체성분에 맞는 운동을 찾기 어렵습니다.  
-이 문제를 해결하기 위해 체성분 데이터를 기반으로 운동을 추천하고,  
+헬스를 처음 시작하는 사용자들은 자신의 체성분에 맞는 운동을 찾기 어렵습니다.  
+이 문제를 해결하기 위해 체성분 데이터를 기반으로 운동을 추천하고,  
 운동 기록을 관리할 수 있는 웹 서비스를 개발했습니다.
 
 주요 기능
@@ -25,9 +25,8 @@ AI Health는 사용자의 체성분 데이터를 기반으로 맞춤 운동을 �
 
 ## 프로젝트 정보
 
-- **프로젝트 유형** : 졸업 프로젝트  
-- **개발 기간** : 2025.09 ~ 2025.11  
-- **개발 인원** : 2명  
+- **개발 기간** : 2025.09 ~ 2025.11  
+- **개발 인원** : 2명  
 
 ---
 
@@ -78,8 +77,8 @@ AI Health는 사용자의 체성분 데이터를 기반으로 맞춤 운동을 �
 
 ### Authentication
 - OAuth2
-  - Kakao Login
-  - Naver Login
+  - Kakao Login
+  - Naver Login
 
 ---
 
@@ -116,6 +115,9 @@ AI Health는 사용자의 체성분 데이터를 기반으로 맞춤 운동을 �
 
 ---
 
+### ERD
+<img width="2522" height="1311" alt="image" src="https://github.com/user-attachments/assets/25589f41-4251-45b0-876b-8f30428a2ced" />
+
 ## 프로젝트 화면
 
 ### 메인 화면
@@ -126,9 +128,10 @@ AI Health는 사용자의 체성분 데이터를 기반으로 맞춤 운동을 �
 
 ### AI 운동 추천
 
-<img width="517" height="752" alt="스크린샷 2026-03-12 174846" src="https://github.com/user-attachments/assets/f04a1f3b-b440-4da9-9699-6604644e7f9e" />
+<img width="517" height="752" alt="image" src="https://github.com/user-attachments/assets/ba25f3d1-04b2-4712-a3dd-54f82104092f" />
 
-<img width="964" height="1129" alt="image" src="https://github.com/user-attachments/assets/4f8cfda8-38fd-4c34-9cc5-a92b6e32eb36" />
+
+<img width="1350" height="1780" alt="localhost_8080_inbody_result (1)" src="https://github.com/user-attachments/assets/6f943923-a025-48ff-9f4c-fed6ec1584a4" />
 
 <img width="1455" height="1344" alt="image" src="https://github.com/user-attachments/assets/62594025-8f41-4e60-9e07-1500b1d78860" />
 
@@ -136,7 +139,8 @@ AI Health는 사용자의 체성분 데이터를 기반으로 맞춤 운동을 �
 
 ### 운동 일지
 
-<img width="770" height="1166" alt="image" src="https://github.com/user-attachments/assets/4dd70e64-bcfd-4f6e-9b78-3bf468903431" />
+<img width="1350" height="1562" alt="localhost_8080_workout_workoutDate=2025-09-23" src="https://github.com/user-attachments/assets/63b4fb56-e4af-4ff2-a046-25257e8f797c" />
+
 
 ---
 
@@ -152,14 +156,14 @@ AI Health는 사용자의 체성분 데이터를 기반으로 맞춤 운동을 �
 
 ```
 AIHealth
- ├─ controller
- ├─ service
- ├─ repository
- ├─ entity
- ├─ dto
- ├─ config
- ├─ templates
- └─ static
+ ├─ controller
+ ├─ service
+ ├─ repository
+ ├─ entity
+ ├─ dto
+ ├─ config
+ ├─ templates
+ └─ static
 ```
 
 ---
@@ -191,5 +195,6 @@ Mac / Linux
 
 ## 개발자
 
-김준희  
+김준희  
 강남대학교 컴퓨터공학과
+ //ERD는 어느 위치에 넣는게 좋을까?
