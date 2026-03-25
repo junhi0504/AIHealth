@@ -81,6 +81,9 @@ AI Health는 사용자의 체성분 데이터를 기반으로 맞춤 운동을 �
   - Naver Login
 
 ---
+## 데이터베이스 설계 (ERD)
+> 효율적인 데이터 관리와 확장성을 고려하여 설계된 DB 구조입니다.
+<img width="100%" alt="ERD" src="https://github.com/user-attachments/assets/25589f41-4251-45b0-876b-8f30428a2ced" />
 
 ## 주요 기능
 
@@ -115,8 +118,6 @@ AI Health는 사용자의 체성분 데이터를 기반으로 맞춤 운동을 �
 
 ---
 
-### ERD
-<img width="2522" height="1311" alt="image" src="https://github.com/user-attachments/assets/25589f41-4251-45b0-876b-8f30428a2ced" />
 
 ## 프로젝트 화면
 
@@ -197,4 +198,3 @@ Mac / Linux
 
 김준희  
 강남대학교 컴퓨터공학과
- //ERD는 어느 위치에 넣는게 좋을까?
