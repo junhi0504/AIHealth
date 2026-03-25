@@ -126,7 +126,7 @@ AI Health는 사용자의 체성분 데이터를 기반으로 맞춤 운동을 �
 
 ### AI 운동 추천
 
-<img width="1019" height="1189" alt="image" src="https://github.com/user-attachments/assets/9ce69282-e1f7-4285-9ad2-e7365de3e1a2" />
+<img width="517" height="752" alt="스크린샷 2026-03-12 174846" src="https://github.com/user-attachments/assets/f04a1f3b-b440-4da9-9699-6604644e7f9e" />
 
 <img width="964" height="1129" alt="image" src="https://github.com/user-attachments/assets/4f8cfda8-38fd-4c34-9cc5-a92b6e32eb36" />
 
